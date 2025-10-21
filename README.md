@@ -334,7 +334,6 @@ bank_RAG/
 │   ├── credit_card_faq.txt
 │   ├── account_types.txt
 │   ├── atm_locations.txt
-│   ├── overdraft_protection.txt
 │   ├── wire_transfer_guide.txt
 │   └── mobile_banking_guide.txt
 │
