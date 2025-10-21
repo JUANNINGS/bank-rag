@@ -1,0 +1,50 @@
+# Bank RAG System Requirements
+# Python 3.8+
+# Updated to use latest compatible versions (October 2024)
+
+# Core LangChain Dependencies - Latest versions
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-community>=0.3.0
+langchain-core>=0.3.0
+langchain-text-splitters>=0.3.0
+
+# Azure OpenAI - Latest version
+openai>=1.50.0
+
+# Vector Store and Retrieval
+faiss-cpu>=1.8.0
+rank-bm25>=0.2.2
+
+# Optional: Reranking (uncomment if using Cohere)
+# langchain-cohere>=0.3.0
+# cohere>=5.11.0
+
+# Document Processing
+pypdf>=5.0.0
+docx2txt>=0.8
+unstructured>=0.16.0
+python-docx>=1.1.2
+
+# Data Processing
+numpy>=1.26.0
+pandas>=2.2.0
+
+# Utilities
+python-dotenv>=1.0.1
+tqdm>=4.66.5
+pydantic>=2.9.0
+
+# Optional: For testing and development
+pytest>=8.3.0
+pytest-cov>=5.0.0
+
+# Optional: For API deployment (full-stack team)
+# fastapi>=0.115.0
+# uvicorn>=0.30.0
+
+# Installation:
+# pip install -r requirements.txt
+#
+# Or for fresh install:
+# pip install --upgrade -r requirements.txt

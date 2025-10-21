@@ -1,0 +1,1270 @@
+# Melbourne First Bank Mobile Banking Guide
+
+Complete Guide to the Melbourne First Bank Mobile App
+
+
+
+## Getting Started
+
+
+
+### Download the App
+
+- **iOS:** Available on Apple App Store (iOS 13.0 or later)
+
+- **Android:** Available on Google Play Store (Android 8.0 or later)
+
+- **Search for:** "Melbourne First Bank"
+
+- **Download size:** Approximately 95 MB
+
+
+
+### System Requirements
+
+- Active internet connection (WiFi or mobile data)
+
+- Compatible smartphone or tablet
+
+- Valid Melbourne First Bank account
+
+- Australian mobile number
+
+
+
+---
+
+
+
+## First-Time Setup
+
+
+
+### Step 1: Install and Open
+
+1. Download Melbourne First Bank app from your device's app store
+
+2. Open the app
+
+3. Tap "Register" (if first-time user) or "Log In" (if already registered for internet banking)
+
+
+
+### Step 2: Registration (New Users)
+
+1. Enter your account number or debit card number
+
+2. Enter your date of birth
+
+3. Enter postcode on your account
+
+4. Create username (6-20 characters, letters and numbers)
+
+5. Create strong password (minimum 8 characters with uppercase, lowercase, number, and symbol)
+
+6. Set up security questions (choose 3)
+
+7. Verify Australian mobile number (receive SMS code)
+
+8. Verify email address (receive email code)
+
+
+
+### Step 3: Set Up Biometric Login (Recommended)
+
+- **Face ID:** (iPhone X and later)
+
+- **Touch ID:** (iPhone with Touch ID, compatible iPads)
+
+- **Fingerprint:** (Android devices with fingerprint sensor)
+
+
+
+**To enable:**
+
+1. Tap Profile icon (top right)
+
+2. Select "Settings"
+
+3. Toggle on "Biometric Login"
+
+4. Follow device prompts to register face or fingerprint
+
+5. Set up 4-digit backup PIN
+
+
+
+### Step 4: Enable Notifications
+
+Allow notifications for:
+
+- Transaction alerts
+
+- Balance notifications
+
+- Security alerts
+
+- Payment reminders
+
+- Special offers (optional)
+
+
+
+---
+
+
+
+## Main Features
+
+
+
+### Dashboard (Home Screen)
+
+When you log in, you'll see:
+
+- **Account Balances:** All your Melbourne First accounts at a glance
+
+- **Recent Transactions:** Last 15 transactions across all accounts
+
+- **Quick Actions:** PayID, BPAY, transfer money, find ATM
+
+- **Spending Insights:** This month's spending by category
+
+- **Alerts:** Important notifications and messages
+
+- **Budget Tracker:** Progress toward monthly budget goals
+
+
+
+### Account Management
+
+
+
+**View Account Details:**
+
+- Tap any account to see full details
+
+- View available balance vs. current balance (including pending transactions)
+
+- See pending transactions separately
+
+- Download statements (PDF) for up to 7 years
+
+- View BSB and account number
+
+- Set account nickname (e.g., "Holiday Fund", "Bills Account")
+
+
+
+**Transaction History:**
+
+- View up to 24 months of history
+
+- Search transactions by merchant, amount, date, or description
+
+- Filter by transaction type (EFTPOS, PayWave, direct debit, etc.)
+
+- Export to CSV for tax or budgeting purposes
+
+- Dispute transactions directly from transaction details
+
+- Add notes/tags to transactions
+
+
+
+### Mobile Deposits (Cheques)
+
+
+
+**How to Deposit Cheques:**
+
+1. Tap "Deposit" from quick actions or main menu
+
+2. Select account for deposit
+
+3. Enter cheque amount manually
+
+4. Photograph front of cheque
+
+5. Photograph back of cheque (endorsed)
+
+6. Review images and submit
+
+7. Write "Deposited via mobile" on cheque and keep for 14 days
+
+
+
+**Limits:**
+
+- $5,000 per cheque
+
+- $10,000 per day
+
+- $25,000 per month
+
+
+
+**Availability:**
+
+- Cheques deposited before 5 PM AEST/AEDT: Available next business day
+
+- Cheques deposited after 5 PM: Available in 2 business days
+
+- First-time users: May have 3-5 day hold for first few cheques
+
+
+
+**Tips for Best Results:**
+
+- Use plain, contrasting background (white paper on dark table)
+
+- Ensure all four corners of cheque visible
+
+- Good lighting, no shadows
+
+- Cheque must be flat, not wrinkled or folded
+
+- Sign back of cheque: "For mobile deposit only - Melbourne First Bank" + your signature
+
+- Clear, in-focus image
+
+
+
+---
+
+
+
+## Payments and Transfers
+
+
+
+### PayID and Osko (Instant Payments)
+
+
+
+**What is PayID?**
+
+- Pay using mobile number, email, or ABN instead of BSB/account number
+
+- Instant transfers (usually under 60 seconds)
+
+- Works with any Australian bank
+
+- Free to use
+
+- Available 24/7, including weekends and public holidays
+
+
+
+**Setting Up Your PayID:**
+
+1. Tap "PayID" from menu
+
+2. Select account to link
+
+3. Choose PayID type (mobile number or email)
+
+4. Verify with SMS or email code
+
+5. Start receiving instant payments
+
+
+
+**Sending Money with PayID:**
+
+1. Tap "Pay Anyone" or "Send Money"
+
+2. Enter recipient's PayID (mobile or email)
+
+3. Confirm recipient name shown
+
+4. Enter amount
+
+5. Add description (optional)
+
+6. Tap "Send"
+
+- Money arrives in seconds
+
+- Recipient receives notification
+
+
+
+**PayID Limits:**
+
+- Default: $10,000 per day
+
+- Can be increased to $25,000 by calling 13 MELB
+
+- Premium Banking: $25,000 default limit
+
+
+
+### BPAY
+
+
+
+**What is BPAY?**
+
+- Pay Australian bills using biller code and reference number
+
+- Free service
+
+- Available 24/7
+
+- Payment usually received by biller next business day
+
+
+
+**Making BPAY Payment:**
+
+1. Tap "BPAY" from main menu
+
+2. Enter biller code (from your bill)
+
+3. Enter reference number (your customer number with biller)
+
+4. Enter amount
+
+5. Select account to pay from
+
+6. Choose payment date (today or schedule future)
+
+7. Confirm payment
+
+
+
+**Save Frequent Billers:**
+
+- Save billers for quick future payments
+
+- Set up recurring BPAY (weekly, fortnightly, monthly)
+
+- Receive reminders before payment due date
+
+
+
+### Standard Bank Transfers (EFT)
+
+
+
+**Transferring to Other Australian Banks:**
+
+1. Tap "Transfer" or "Pay Anyone"
+
+2. Enter recipient's BSB (6 digits)
+
+3. Enter account number
+
+4. Enter recipient name
+
+5. Enter amount
+
+6. Add description
+
+7. Choose date (immediate or schedule)
+
+8. Confirm transfer
+
+
+
+**Between Your Melbourne First Accounts:**
+
+- Instant and free
+
+- No limits
+
+- Available 24/7
+
+
+
+**Transfer Limits:**
+
+- PayID/Osko: $10,000/day (can be increased)
+
+- Standard transfer: $50,000/day
+
+- Can be increased by calling 13 MELB
+
+
+
+### International Transfers
+
+
+
+**Send Money Overseas:**
+
+1. Tap "International Transfer"
+
+2. Enter recipient details (or select saved recipient)
+
+3. Enter amount (AUD or foreign currency)
+
+4. Review exchange rate
+
+5. Choose fee payment option (OUR/SHA/BEN)
+
+6. Confirm with SMS code
+
+7. Receive confirmation and tracking reference
+
+
+
+**Fee:** $20 (waived for Premium Banking - 3 per month)
+
+
+
+---
+
+
+
+## Card Management
+
+
+
+### Digital Card
+
+- Instant access to card number in app
+
+- Use for online purchases before physical card arrives
+
+- View CVV securely
+
+- Add to Apple Pay or Google Pay instantly
+
+
+
+### Card Controls (Security Features)
+
+
+
+**Lock/Unlock Card:**
+
+- Instantly freeze card if misplaced
+
+- Unlock when found
+
+- Scheduled payments still process when locked
+
+- ATM withdrawals blocked when locked
+
+
+
+**Transaction Limits:**
+
+- Set daily spending limit
+
+- Set single transaction limit
+
+- Limits from $50 to $5,000
+
+
+
+**Geographic Controls:**
+
+- Block international transactions
+
+- Allow transactions in specific countries only
+
+- Enable for travel, disable when home
+
+
+
+**Transaction Type Controls:**
+
+- Block contactless payments
+
+- Block online transactions
+
+- Block ATM withdrawals
+
+- Enable/disable as needed
+
+
+
+**Alerts:**
+
+- Instant notification for every transaction
+
+- Large purchase alerts (over amount you set)
+
+- Declined transaction alerts
+
+- International transaction alerts
+
+
+
+### Replace Lost or Stolen Card
+
+1. Tap "Cards" from menu
+
+2. Select card
+
+3. Tap "Report Lost/Stolen"
+
+4. Card immediately cancelled
+
+5. Choose replacement delivery:
+
+   - Standard (free, 5-7 business days)
+
+   - Express ($15, 2-3 business days)
+
+6. New card dispatched
+
+
+
+---
+
+
+
+## Security Features
+
+
+
+### Biometric Login
+
+- Face ID / Touch ID / Fingerprint
+
+- No need to remember password for daily use
+
+- More secure than passwords
+
+- Backup PIN available if biometrics fail
+
+
+
+### Two-Factor Authentication
+
+- Required for sensitive actions (like adding payees)
+
+- Receive SMS code to registered mobile
+
+- Valid for 5 minutes
+
+- Ensures only you can authorize transactions
+
+
+
+### Secure Messaging
+
+- Communicate with Melbourne First Bank securely within app
+
+- Never share sensitive information via regular email or SMS
+
+- Messages encrypted end-to-end
+
+- Attach documents or screenshots
+
+- Response within 1 business day
+
+
+
+### Transaction Notifications
+
+Real-time alerts for:
+
+- Every card transaction
+
+- Direct debits
+
+- Large transfers
+
+- Balance changes
+
+- Failed payment attempts
+
+- International transactions
+
+
+
+### Safety Features
+
+
+
+**Card Lock:**
+
+Temporarily freeze your card:
+
+- Tap "Cards" > Select card > "Lock Card"
+
+- Prevents new transactions
+
+- Unlock instantly when found
+
+- Scheduled payments continue
+
+
+
+**Biometric Verification:**
+
+- Required for viewing full account/card numbers
+
+- Required for high-value transactions
+
+- Required for changing security settings
+
+
+
+**Session Timeout:**
+
+- App locks after 2 minutes of inactivity
+
+- Requires biometric or PIN to resume
+
+- Protects if phone left unattended
+
+
+
+**Device Registration:**
+
+- App tied to your specific device
+
+- New device requires re-registration
+
+- Email notification when new device added
+
+
+
+---
+
+
+
+## Additional Features
+
+
+
+### Spending Insights and Budgeting
+
+
+
+**Automatic Categorization:**
+
+Transactions automatically sorted into:
+
+- Groceries & Dining
+
+- Transport
+
+- Entertainment & Leisure
+
+- Bills & Utilities
+
+- Shopping
+
+- Healthcare
+
+- Income
+
+- Other
+
+
+
+**Monthly Spending Analysis:**
+
+- Total spent by category
+
+- Comparison to previous months
+
+- Visual charts and graphs
+
+- Identify spending trends
+
+- Find areas to save
+
+
+
+**Budget Setting:**
+
+1. Tap "Budget" from menu
+
+2. Set budget for each category
+
+3. App tracks spending throughout month
+
+4. Receive alerts when approaching limit (80%, 90%, 100%)
+
+5. See progress with visual indicators
+
+
+
+**Spending Goals:**
+
+- Set savings goals with target amounts
+
+- Track progress
+
+- Celebrate milestones
+
+- Get tips for reaching goals faster
+
+
+
+### ATM and Branch Locator
+
+
+
+**Find Nearby Locations:**
+
+1. Tap "Locations" from menu
+
+2. App shows nearest Melbourne First Bank branches and ATMs
+
+3. Also shows BankNet partner ATMs (surcharge-free)
+
+
+
+**Filters:**
+
+- Open now
+
+- 24-hour access
+
+- Deposit-accepting ATMs
+
+- Wheelchair accessible
+
+- Safe deposit boxes available
+
+
+
+**Features:**
+
+- Get directions via Google Maps or Apple Maps
+
+- Call branch directly from app
+
+- View branch hours
+
+- See services offered at branch
+
+- Check wait times (for select branches)
+
+
+
+### Cardless Cash
+
+
+
+**Withdraw Cash Without Your Card:**
+
+1. Tap "Cardless Cash" from quick actions
+
+2. Select account
+
+3. Choose amount ($20-$500)
+
+4. Receive secure 6-digit code
+
+5. Go to any Melbourne First Bank ATM within 3 hours
+
+6. Select "Cardless Withdrawal"
+
+7. Enter code
+
+8. Collect cash
+
+
+
+**Use cases:**
+
+- Emergency cash when card forgotten
+
+- Send cash code to family member for pickup
+
+- Safer than carrying card
+
+
+
+### Bill Splitting
+
+
+
+**Split Bills with Friends:**
+
+1. Find transaction to split
+
+2. Tap "Split This"
+
+3. Select contacts or enter PayIDs
+
+4. Split evenly or customize amounts
+
+5. Add message
+
+6. Send payment requests
+
+- Recipients receive notification
+
+- They can pay instantly via PayID
+
+
+
+### Financial Health Check
+
+
+
+**Free Financial Wellness Tools:**
+
+- Credit score monitoring (monthly updates)
+
+- Account health score
+
+- Savings rate analysis
+
+- Debt-to-income ratio
+
+- Personalized savings tips
+
+- Goal setting and tracking
+
+
+
+### Quick Balance Check
+
+
+
+**Check Balance Without Login:**
+
+1. Open app
+
+2. Use Face ID/Touch ID on opening screen
+
+3. See balance immediately without full login
+
+4. More secure than showing on lock screen
+
+
+
+---
+
+
+
+## Accessibility Features
+
+
+
+Melbourne First Bank app is designed for all users:
+
+
+
+**VoiceOver/TalkBack Support:**
+
+- Full screen reader compatibility
+
+- All features accessible via voice guidance
+
+- Properly labeled elements
+
+
+
+**Large Text:**
+
+- Supports iOS/Android system text size settings
+
+- Scales up to 300%
+
+- Maintains readability
+
+
+
+**High Contrast Mode:**
+
+- Dark mode available
+
+- High contrast option for vision impairment
+
+- Compatible with device accessibility settings
+
+
+
+**Voice Banking:**
+
+Ask Siri or Google Assistant:
+
+- "What's my Melbourne First balance?"
+
+- "Pay electricity bill with Melbourne First"
+
+- "Transfer $100 to savings with Melbourne First"
+
+
+
+---
+
+
+
+## Troubleshooting
+
+
+
+### Login Issues
+
+
+
+**Forgot Username:**
+
+1. Tap "Forgot Username" on login screen
+
+2. Enter account/card number
+
+3. Enter date of birth and postcode
+
+4. Username sent to registered email
+
+
+
+**Forgot Password:**
+
+1. Tap "Forgot Password"
+
+2. Enter username
+
+3. Answer security question
+
+4. Create new password
+
+5. Confirm with SMS code
+
+
+
+**Account Locked:**
+
+- After 3 failed login attempts, account locks for 15 minutes
+
+- Or call 13 MELB to unlock immediately
+
+- For security, never share password with anyone
+
+
+
+### App Performance Issues
+
+
+
+**App Crashes or Freezes:**
+
+1. Close app completely (swipe up from app switcher)
+
+2. Clear app cache:
+
+   - iOS: Delete and reinstall app
+
+   - Android: Settings > Apps > Melbourne First > Clear Cache
+
+3. Restart device
+
+4. Reinstall app if problem persists
+
+5. Ensure you have latest app version
+
+
+
+**Can't Connect:**
+
+- Check internet connection (WiFi or mobile data)
+
+- Try switching between WiFi and mobile data
+
+- Disable VPN if using one
+
+- Check app update available
+
+- Verify Melbourne First systems operational at melbournefirst.com.au/status
+
+
+
+**Features Not Loading:**
+
+- Pull down to refresh
+
+- Log out and log back in
+
+- Check for app update in App Store/Play Store
+
+- Clear cache (Android) or reinstall (iOS)
+
+
+
+### Mobile Deposit Issues
+
+
+
+**Cheque Photos Rejected:**
+
+- Ensure all four corners visible in frame
+
+- Use dark, plain background (table or dark paper)
+
+- Avoid glare and shadows
+
+- Make sure cheque is completely flat
+
+- Clean camera lens
+
+- Good lighting essential
+
+- Try landscape orientation
+
+- Cheque must be endorsed on back
+
+
+
+**Deposit Not Showing:**
+
+- Check "Pending Transactions"
+
+- May take up to 30 minutes to appear
+
+- Check email for deposit confirmation
+
+- Call 13 MELB if not visible after 2 hours
+
+
+
+---
+
+
+
+## App Settings and Customization
+
+
+
+### Personalize Your Experience
+
+
+
+**Dashboard:**
+
+- Reorder accounts by drag-and-drop
+
+- Show/hide accounts
+
+- Choose default account
+
+- Customize quick actions
+
+
+
+**Notifications:**
+
+- Choose which alerts to receive
+
+- Set quiet hours (no notifications during sleep)
+
+- Customize alert sounds
+
+- Choose delivery method (push, SMS, email)
+
+
+
+**Security:**
+
+- Enable/disable biometric login
+
+- Change password
+
+- Manage trusted devices
+
+- View login history
+
+- Update security questions
+
+
+
+**Preferences:**
+
+- Language: English (default), or other languages
+
+- Date format (DD/MM/YYYY Australian standard)
+
+- Time format (12h or 24h)
+
+- App theme (Light, Dark, Auto)
+
+- Currency display format
+
+
+
+---
+
+
+
+## App Updates
+
+
+
+### Recent Updates (October 2024)
+
+- Enhanced biometric security
+
+- Improved mobile cheque deposit accuracy
+
+- Faster app loading times
+
+- New spending insights dashboard
+
+- Dark mode improvements
+
+- Bill splitting feature
+
+- PayID 2.0 support
+
+- Widget support for iOS 14+
+
+
+
+### Coming Soon
+
+- Cryptocurrency wallet integration
+
+- Enhanced budgeting AI assistant
+
+- Split payment for BPAY bills
+
+- Virtual card numbers for online shopping
+
+- Carbon footprint tracking
+
+- Superannuation integration
+
+
+
+---
+
+
+
+## Privacy and Data
+
+
+
+### What We Collect
+
+- Account and transaction information
+
+- Device information (model, OS version)
+
+- Location data (for ATM/branch finder - optional, you control this)
+
+- App usage data (to improve experience)
+
+
+
+### What We Don't Collect
+
+- Passwords (stored encrypted only on your device)
+
+- Biometric data (stored on device only by iOS/Android, never transmitted)
+
+- Contact lists (unless you grant permission for PayID)
+
+- Browsing history outside the app
+
+
+
+### Your Privacy Controls
+
+- Opt out of marketing communications
+
+- Disable location services (ATM finder won't work)
+
+- Control data sharing preferences
+
+- Download your data
+
+- Delete saved payees/recipients anytime
+
+
+
+### Security Promise
+
+- Bank-level 256-bit encryption
+
+- Never store full card details
+
+- No access to biometric data
+
+- PCI DSS compliant
+
+- Regular security audits
+
+
+
+---
+
+
+
+## Getting Help
+
+
+
+### In-App Support
+
+
+
+**Help Center:**
+
+- Tap Profile > Help Center
+
+- Searchable FAQ database
+
+- How-to videos and tutorials
+
+- Step-by-step guides
+
+- Updated weekly
+
+
+
+**Live Chat:**
+
+- Tap Profile > Chat with Us
+
+- Available Mon-Fri 8 AM - 8 PM, Sat-Sun 9 AM - 5 PM AEST/AEDT
+
+- Connect with live support agent
+
+- Screen sharing available (for troubleshooting)
+
+
+
+**Secure Messaging:**
+
+- Tap Profile > Messages
+
+- Send secure message to customer service
+
+- Attach screenshots if needed
+
+- Response within 4 business hours
+
+
+
+### Contact Customer Service
+
+- **Phone:** 13 MELB (13 6352) - 24/7
+
+- **International:** +61 3 9xxx xxxx
+
+- **Email:** support@melbournefirst.com.au
+
+- **Social Media:** @MelbourneFirstBank (Facebook, Twitter, Instagram)
+
+
+
+### Report Issues
+
+- **Fraud/Security:** Call 13 MELB immediately (24/7)
+
+- **Technical Issues:** Use in-app chat or email app@melbournefirst.com.au
+
+- **Complaints:** Profile > Make a Complaint
+
+
+
+---
+
+
+
+*Melbourne First Bank mobile app is free to download and use. Standard data charges from your mobile carrier may apply. Features and availability subject to change. App requires compatible device and Melbourne First Bank account.*
+
