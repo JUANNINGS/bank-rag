@@ -19,13 +19,13 @@ class AzureOpenAIConfig:
     
     # Azure OpenAI Credentials
     # IMPORTANT: Set these via environment variables or update with your values
-    api_key: str = os.getenv("AZURE_OPENAI_API_KEY", "")  # Your Azure OpenAI API key
-    endpoint: str = os.getenv("AZURE_OPENAI_ENDPOINT", "https://your-resource-name.openai.azure.com/")
+    api_key: str = os.getenv("AZURE_OPENAI_API_KEY")  # Your Azure OpenAI API key
+    endpoint: str = os.getenv("AZURE_OPENAI_ENDPOINT")
     api_version: str = "2024-12-01-preview"
     
     # Deployment Names (update these to match your Azure deployments)
-    gpt_deployment: str = os.getenv("AZURE_GPT_DEPLOYMENT", "gpt-4")  # Your GPT model deployment name
-    embedding_deployment: str = os.getenv("AZURE_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002")  # Your embedding model deployment name
+    gpt_deployment: str = os.getenv("AZURE_GPT_DEPLOYMENT")  # Your GPT model deployment name
+    embedding_deployment: str = os.getenv("AZURE_EMBEDDING_DEPLOYMENT")  # Your embedding model deployment name
     
     # Model Parameters
     temperature: float = 0.0  # 0 for deterministic responses
