@@ -30,6 +30,9 @@ python-docx>=1.1.2
 numpy>=1.26.0
 pandas>=2.2.0
 
+# RAG Evaluation Framework
+ragas>=0.1.0
+
 # Utilities
 python-dotenv>=1.0.1
 tqdm>=4.66.5

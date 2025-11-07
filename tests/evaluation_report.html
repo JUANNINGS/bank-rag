@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bank RAG 评估报告</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 10px; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .metric { display: inline-block; width: 200px; margin: 15px; padding: 20px; background: #ecf0f1; border-radius: 8px; text-align: center; }
+        .metric-value { font-size: 32px; font-weight: bold; color: #2c3e50; }
+        .metric-label { color: #7f8c8d; margin-top: 5px; }
+        .pass { color: #27ae60; }
+        .fail { color: #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 Bank RAG 评估报告</h1>
+        <p>评估时间: 2025-11-05T11:33:28.209320</p>
+        <p>测试问题: <strong>10</strong> 个</p>
+        
+        <h2>🔍 检索质量</h2>
+        <div class="metric">
+            <div class="metric-value">94%</div>
+            <div class="metric-label">Precision</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Hit Rate</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">1.00</div>
+            <div class="metric-label">MRR</div>
+        </div>
+        
+        <h2>✨ 生成质量</h2>
+        <div class="metric"><div class="metric-value fail">94%</div><div class="metric-label">Faithfulness (≥95%)</div></div>
+        <div class="metric"><div class="metric-value fail">85%</div><div class="metric-label">Relevancy (≥85%)</div></div>
+        
+        <h2>🎯 PRD要求检查</h2>
+        <p>Precision ≥ 90%: <strong class="pass">
+            94.0% ✅ PASS
+        </strong></p>
+        <p>Faithfulness ≥ 95%: <strong class="fail">93.6% ❌ FAIL</strong></p>
+    </div>
+</body>
+</html>

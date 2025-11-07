@@ -1,0 +1,17 @@
+{
+  "retrieval": {
+    "hit_rate": 1.0,
+    "mrr": 1.0,
+    "ndcg": 0.9525547445255474,
+    "precision": 0.9400000000000001,
+    "context_recall": 0.6
+  },
+  "generation": {
+    "faithfulness": 0.9360606060606061,
+    "answer_relevancy": 0.8462769361821361,
+    "answer_correctness": 0.39053149943929144,
+    "answer_similarity": 0.8948678616034196
+  },
+  "num_queries": 10,
+  "timestamp": "2025-11-05T11:33:28.209320"
+}

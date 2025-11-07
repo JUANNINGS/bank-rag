@@ -50,7 +50,7 @@ The Bank RAG system provides intelligent, context-aware answers to banking quest
 - **Hybrid Search**: Best of keyword and semantic search
 - **Source Attribution**: Every answer cites its sources
 - **Confidence Scoring**: Know when the system is uncertain
-- **Evaluation Framework**: Built-in metrics (Hit Rate, MRR, nDCG, Precision)
+- **Comprehensive Evaluation**: 9 metrics across retrieval, generation, and end-to-end quality (powered by Ragas)
 
 ### Australian Banking Content
 - 7 comprehensive Melbourne First Bank documents (44,000+ words):
@@ -283,33 +283,11 @@ async def health_check():
 }
 ```
 
-### Frontend Integration Example
+### Frontend Integration
 
-```javascript
-// React/JavaScript example
-async function askBankQuestion(question) {
-  const response = await fetch('http://localhost:8000/api/v1/query', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-      question: question,
-      include_sources: true 
-    })
-  });
-  
-  const data = await response.json();
-  
-  return {
-    answer: data.answer,
-    confidence: data.confidence,
-    sources: data.sources,
-    responseTime: data.response_time
-  };
-}
-
-// Usage
-const result = await askBankQuestion("What are your credit card options?");
-console.log(result.answer);
+POST to `http://localhost:8000/api/v1/query` with JSON body:
+```json
+{ "question": "Your question", "include_sources": true }
 ```
 
 ---
@@ -437,37 +415,85 @@ COHERE_API_KEY=your-cohere-key
 ### Run Evaluation
 
 ```bash
-python main.py eval
+# Quick test (2 min) - verify system works
+python3 test_evaluation_quick.py
+
+# Full evaluation (5-10 min) - comprehensive metrics
+python3 evaluation.py
+
+# View HTML report
+firefox ./tests/evaluation_report.html
 ```
 
-### Metrics Explained
+### Evaluation Metrics (9 indicators)
 
-| Metric | Description | Target | Example |
-|--------|-------------|--------|---------|
-| **Hit Rate** | Did we find any relevant document? | ≥ 85% | Found loan_policy.txt for "How to apply for loan?" |
-| **MRR** | Mean Reciprocal Rank - How high was first relevant doc? | Higher is better | Relevant doc was 2nd → MRR = 0.5 |
-| **nDCG** | Ranking quality considering all docs | 0-1 (higher better) | All relevant docs in top 3 → high nDCG |
-| **Precision@k** | % of retrieved docs that are relevant | ≥ 90% | 4 out of 5 retrieved docs relevant → 80% |
+| Type | Metrics | Target | Why Important |
+|------|---------|--------|---------------|
+| **🔍 Retrieval** | Precision, Recall, Hit Rate, MRR, nDCG | ≥90% | Found right documents? |
+| **✨ Generation** | Faithfulness, Answer Relevancy | ≥95% | No hallucination? Answers question? |
+| **📈 Accuracy** | Answer Correctness, Similarity | ≥80% | Matches reference answer? |
+
+**Key Metrics**:
+- **Faithfulness** 🔥: Detects if AI invents information (e.g., wrong interest rates). Target: ≥95%
+- **Answer Relevancy**: Checks if answer actually addresses the question. Target: ≥85%
+- **Precision**: Percentage of retrieved documents that are relevant. Target: ≥90%
+
+### Test Dataset
+
+30 test questions covering 5 banking categories:
+- 💰 Personal Loans (6) | 💳 Credit Cards (5) | 🏦 Accounts (6) 
+- 🌍 Transfers (6) | 📱 Mobile/ATM (7)
+
+Each includes: question, expected sources, reference answer, and category.
 
 ### Sample Output
 
 ```
-==============================================================
-EVALUATION RESULTS
-==============================================================
-Number of queries: 10
-Hit Rate:         90.00% (found relevant doc)
-MRR:              0.7500 (avg reciprocal rank)
-nDCG:             0.8234 (ranking quality)
-Precision:        92.00% (relevant docs ratio)
-==============================================================
+📊 COMPREHENSIVE RAG EVALUATION RESULTS
+Evaluated: 30 queries
 
-PRD REQUIREMENTS CHECK
-==============================================================
-Target: Retrieval Precision ≥ 90%
-Actual: 92.00%
-Status: ✓ PASS
+🔍 RETRIEVAL QUALITY
+  Precision:        91.67%  [✅ PASS ≥90%]
+  Context Recall:   88.50%
+
+✨ GENERATION QUALITY  
+  Faithfulness:     96.20%  [✅ PASS ≥95%] ← No hallucination
+  Answer Relevancy: 89.30%  [✅ PASS ≥85%] ← Answers question
+
+📈 PRD Requirements: All Passed ✅
 ```
+
+### Advanced Usage
+
+<details>
+<summary>Click to expand advanced options</summary>
+
+**Skip LLM evaluation (faster, cheaper)**:
+```python
+evaluator = ComprehensiveRAGEvaluator(pipeline, use_ragas=False)
+```
+
+**Evaluate single query**:
+```python
+result = evaluator.evaluate_query(
+    query="How do I apply for a loan?",
+    expected_sources=['loan_policy.txt'],
+    reference_answer="Apply online or visit branch..."
+)
+```
+
+**Add custom test questions** in `evaluation.py`:
+```python
+{
+    'query': 'Your question?',
+    'expected_sources': ['doc.txt'],
+    'reference_answer': 'Answer...',
+    'category': 'loan'
+}
+```
+
+**Cost**: ~$1-2 for 30 questions (GPT-4) or $0.2-0.5 (GPT-4o-mini)
+</details>
 
 ---
 
@@ -476,17 +502,28 @@ Status: ✓ PASS
 ### Python Packages (Latest Versions)
 
 ```
+# Core RAG Framework
 langchain >= 0.3.0
 langchain-openai >= 0.2.0
 langchain-community >= 0.3.0
 openai >= 1.50.0
+
+# Retrieval & Vector Store
 faiss-cpu >= 1.8.0
 rank-bm25 >= 0.2.2
+
+# Evaluation Framework
+ragas >= 0.1.0
+
+# Document Processing
 pypdf >= 5.0.0
 python-docx >= 1.1.2
+
+# Data & Utils
 numpy >= 1.26.0
 pandas >= 2.2.0
 pydantic >= 2.9.0
+python-dotenv >= 1.0.0
 ```
 
 See `requirements.txt` for complete list.

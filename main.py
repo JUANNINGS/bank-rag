@@ -11,7 +11,7 @@ from chunking import chunk_banking_documents
 from embeddings import create_embeddings_generator
 from retriever import create_hybrid_retriever
 from rag_pipeline import create_rag_pipeline, RAGResponse
-from evaluation import RAGEvaluator, generate_test_queries
+from evaluation import ComprehensiveRAGEvaluator, generate_comprehensive_test_queries
 from config import get_system_config
 
 # Configure logging
@@ -152,14 +152,18 @@ def demo_interactive():
         # Display response
         print("\n" + "-"*60)
         print(f"🤖 Answer:\n{response.answer}")
-        print(f"\n📊 Confidence: {response.confidence:.0%}")
-        print(f"⏱️  Response time: {response.response_time:.2f}s")
+        
+        print(f"\n📊 Metrics:")
+        print(f"  Response time:  {response.response_time:.2f}s")
+        print(f"  Refusal:        {'Yes ⚠️' if response.is_refusal else 'No ✓'}")
+        print(f"  Retrieved docs: {len(response.sources)}")
         
         if response.sources:
             print(f"\n📚 Sources:")
             for i, source in enumerate(response.sources, 1):
                 print(f"  {i}. {source['source']}")
         
+        print("\n💡 Tip: Run 'python3 evaluation.py' for comprehensive evaluation metrics")
         print("-"*60)
 
 
@@ -208,9 +212,9 @@ def demo_evaluation():
     
     # Run evaluation
     print("\nRunning evaluation on test queries...")
-    test_queries = generate_test_queries()
+    test_queries = generate_comprehensive_test_queries()
     
-    evaluator = RAGEvaluator(system.pipeline)
+    evaluator = ComprehensiveRAGEvaluator(system.pipeline)
     metrics = evaluator.evaluate_dataset(test_queries)
     
     # Print results
@@ -223,8 +227,8 @@ def demo_evaluation():
     
     requirements = [
         ("Response Time", "< 3 seconds", f"{metrics.num_queries} queries averaged {system.pipeline.retriever}", "N/A (see individual queries)"),
-        ("Retrieval Precision", "≥ 90%", f"{metrics.precision:.1%}", "✓ PASS" if metrics.precision >= 0.9 else "✗ NEEDS IMPROVEMENT"),
-        ("Hit Rate", "≥ 85% (implied)", f"{metrics.hit_rate:.1%}", "✓ PASS" if metrics.hit_rate >= 0.85 else "✗ NEEDS IMPROVEMENT"),
+        ("Retrieval Precision", "≥ 90%", f"{metrics.retrieval.precision:.1%}", "✓ PASS" if metrics.retrieval.precision >= 0.9 else "✗ NEEDS IMPROVEMENT"),
+        ("Hit Rate", "≥ 85% (implied)", f"{metrics.retrieval.hit_rate:.1%}", "✓ PASS" if metrics.retrieval.hit_rate >= 0.85 else "✗ NEEDS IMPROVEMENT"),
     ]
     
     for req_name, target, actual, status in requirements:
@@ -243,45 +247,13 @@ def api_integration_example():
     print("API Integration Example for Full-Stack Team")
     print("="*60)
     
-    print("""
-# Example FastAPI integration:
-
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from main import BankRAGSystem
-
-app = FastAPI()
-rag_system = BankRAGSystem()
-
-class QuestionRequest(BaseModel):
-    question: str
-    include_sources: bool = True
-
-class AnswerResponse(BaseModel):
-    answer: str
-    confidence: float
-    sources: list
-    is_refusal: bool
-    response_time: float
-
-@app.post("/api/v1/query", response_model=AnswerResponse)
-async def query_endpoint(request: QuestionRequest):
-    try:
-        response = rag_system.query(
-            request.question,
-            include_sources=request.include_sources
-        )
-        return response.to_dict()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-# Start server:
-# uvicorn main:app --reload
-""")
-    
-    print("\n✓ Integration template shown above")
-    print("✓ RAGResponse objects are JSON-serializable")
-    print("✓ All functionality available through BankRAGSystem class")
+    print("\n💡 Quick Integration Guide:")
+    print("  1. Import: from main import BankRAGSystem")
+    print("  2. Initialize: rag = BankRAGSystem()")
+    print("  3. Query: response = rag.query('Your question')")
+    print("  4. Get result: response.answer, response.confidence, response.sources")
+    print("\n📚 For full FastAPI example, see README.md")
+    print("✓ RAGResponse.to_dict() is JSON-serializable")
 
 
 def main():
