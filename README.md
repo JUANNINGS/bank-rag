@@ -20,6 +20,7 @@ A production-ready Retrieval-Augmented Generation (RAG) system for intelligent A
 - [Configuration](#configuration)
 - [Adding New Documents](#adding-new-documents)
 - [Evaluation](#evaluation)
+- [Production Monitoring & Optimization](#production-monitoring--optimization)
 - [Requirements](#requirements)
 - [Troubleshooting](#troubleshooting)
 
@@ -51,6 +52,7 @@ The Bank RAG system provides intelligent, context-aware answers to banking quest
 - **Source Attribution**: Every answer cites its sources
 - **Confidence Scoring**: Know when the system is uncertain
 - **Comprehensive Evaluation**: 9 metrics across retrieval, generation, and end-to-end quality (powered by Ragas)
+- **Production Monitoring**: Automatic query logging, performance tracking, and optimization recommendations
 
 ### Australian Banking Content
 - 7 comprehensive Melbourne First Bank documents (44,000+ words):
@@ -334,7 +336,7 @@ Create a `.env` file in the project root with your Azure OpenAI credentials:
 
 ```bash
 AZURE_OPENAI_API_KEY=your-api-key-here
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_ENDPOINT=your-resource-endpoint
 AZURE_GPT_DEPLOYMENT=gpt-4
 AZURE_EMBEDDING_DEPLOYMENT=text-embedding-ada-002
 ```
@@ -557,7 +559,7 @@ pip install -r requirements.txt
 ```python
 # config.py
 api_key = "your-actual-key-here"  # Get from Azure portal
-endpoint = "https://newaimchatgpt.openai.azure.com/"
+endpoint = "your-resource-endpoint"
 ```
 
 ### Issue: "FAISS index not found"
@@ -651,6 +653,116 @@ INFO - Response generated in 1.45 seconds
 - **Confidence**: Average should be > 0.7
 - **Refusal Rate**: Should be < 15%
 - **Hit Rate**: Should be > 85%
+
+---
+
+## 📊 Production Monitoring & Optimization
+
+Simple yet powerful monitoring system to track performance and optimize with Ragas metrics.
+
+### Quick Start
+
+**1. Automatic Logging** (default: enabled)
+
+```python
+system = BankRAGSystem(enable_monitoring=True)  # Default
+response = system.query("What are the interest rates?")
+# Query is automatically logged to logs/queries/queries_2025-11-09.jsonl
+```
+
+**2. Check Session Stats**
+
+```bash
+python main.py interactive
+
+💬 Your question: stats
+
+📊 Session Summary
+════════════════════════════════════════════════════════════
+Total Queries:       15
+Avg Response Time:   1,234 ms
+Avg Retrieval Score: 0.845
+Refused:             2 (13.3%)
+════════════════════════════════════════════════════════════
+```
+
+**3. Analyze with Ragas**
+
+```bash
+# Analyze all logs and get recommendations
+python analyze_logs.py
+```
+
+### What Gets Logged
+
+- User query and system answer
+- Response time and retrieval scores
+- Retrieved document contexts (for Ragas evaluation)
+- Refusal decisions
+- Daily log rotation: `logs/queries/queries_YYYY-MM-DD.jsonl`
+
+### Analysis Report
+
+The analyzer provides:
+
+**Basic Stats:**
+- Response time (avg, p95)
+- Retrieval quality scores
+- Slow/poor performing queries
+
+**Ragas Metrics:**
+- **Faithfulness** (0-1): Does answer stay true to documents?
+- **Answer Relevancy** (0-1): Does answer address the question?
+
+Both metrics target >0.7 for production quality.
+
+**Optimization Recommendations:**
+
+Prioritized suggestions based on detected issues:
+
+| Issue | Recommendation |
+|-------|----------------|
+| Slow response (>3s) | Reduce k parameter, optimize index |
+| Poor retrieval (<0.6) | Adjust chunk_size (800) and overlap (200) |
+| Low faithfulness (<0.7) | Strengthen prompt, lower temperature |
+| Low relevancy (<0.7) | Improve prompt clarity, check retrieval |
+
+### Optimization Workflow
+
+```bash
+# Week 1: Collect data
+python main.py interactive
+# → Use system, ask questions
+
+# Week 2: Analyze
+python analyze_logs.py
+# → See: "Poor retrieval: 15% queries <0.6 score"
+# → Recommendation: Adjust chunk_size to 800
+
+# Week 3: Implement
+# Edit chunking.py: chunk_size=800, overlap=200
+
+# Week 4: Verify
+python analyze_logs.py
+# → Compare: Score improved 0.65 → 0.82 ✓
+```
+
+### Configuration
+
+```python
+# Disable monitoring
+system = BankRAGSystem(enable_monitoring=False)
+
+# Custom log directory
+from monitoring import create_monitor
+monitor = create_monitor(log_dir="custom/logs")
+```
+
+### Files
+
+- **monitoring.py** (~140 lines): Simple query logger
+- **analyze_logs.py** (~240 lines): Analyzer with Ragas integration
+- Logs excluded from Git via `.gitignore`
 
 ---
 

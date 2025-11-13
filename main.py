@@ -5,6 +5,7 @@ Demonstrates setup and usage for full-stack team integration
 
 import logging
 import json
+import time
 from typing import Optional
 from document_loader import load_banking_documents
 from chunking import chunk_banking_documents
@@ -13,6 +14,7 @@ from retriever import create_hybrid_retriever
 from rag_pipeline import create_rag_pipeline, RAGResponse
 from evaluation import ComprehensiveRAGEvaluator, generate_comprehensive_test_queries
 from config import get_system_config
+from monitoring import create_monitor
 
 # Configure logging
 logging.basicConfig(
@@ -30,15 +32,21 @@ class BankRAGSystem:
     to integrate the RAG system into their application.
     """
     
-    def __init__(self, documents_path: str = "./documents"):
+    def __init__(self, documents_path: str = "./documents", enable_monitoring: bool = True):
         """
         Initialize the complete RAG system
         
         Args:
             documents_path: Path to banking documents directory
+            enable_monitoring: Whether to enable query monitoring
         """
         self.documents_path = documents_path
         self.pipeline = None
+        self.enable_monitoring = enable_monitoring
+        
+        # Initialize monitoring if enabled
+        self.monitor = create_monitor(log_dir="logs/queries") if self.enable_monitoring else None
+        
         self._setup_pipeline()
     
     def _setup_pipeline(self):
@@ -93,7 +101,44 @@ class BankRAGSystem:
         Returns:
             RAGResponse object
         """
-        return self.pipeline.query(question, **kwargs)
+        # Track timing
+        start_time = time.time()
+        
+        # Execute query
+        response = self.pipeline.query(question, **kwargs)
+        
+        # Log to monitoring system if enabled
+        if self.monitor:
+            total_time_ms = (time.time() - start_time) * 1000
+            
+            # Extract retrieval scores
+            retrieval_scores = []
+            if hasattr(response, 'sources') and response.sources:
+                for source in response.sources:
+                    if isinstance(source, dict) and 'score' in source:
+                        retrieval_scores.append(source['score'])
+                    else:
+                        retrieval_scores.append(0.8)
+            
+            # Get source documents for context
+            retrieved_docs = []
+            if hasattr(response, 'source_documents'):
+                retrieved_docs = response.source_documents
+            elif hasattr(response, 'sources'):
+                # Convert sources to document-like objects if needed
+                retrieved_docs = response.sources
+            
+            # Log the query
+            self.monitor.log_query(
+                query=question,
+                answer=response.answer,
+                retrieved_docs=retrieved_docs,
+                retrieval_scores=retrieval_scores or [0.0],
+                time_ms=total_time_ms,
+                refused=response.is_refusal if hasattr(response, 'is_refusal') else False
+            )
+        
+        return response
     
     def batch_query(self, questions: list) -> list:
         """
@@ -111,15 +156,16 @@ class BankRAGSystem:
 def demo_interactive():
     """Interactive demo for testing the system"""
     print("\n" + "="*60)
-    print("Bank RAG System - Interactive Demo")
+    print("Bank RAG System - Interactive Demo with Monitoring")
     print("="*60)
     print("\nInitializing system (this may take a minute)...")
     
-    # Initialize system
-    system = BankRAGSystem()
+    # Initialize system with monitoring enabled
+    system = BankRAGSystem(enable_monitoring=True)
     
     print("\n✓ System ready! Ask questions about TechBank services.")
-    print("Type 'quit' to exit, 'examples' for sample questions.\n")
+    print("📊 Monitoring enabled: All queries will be logged for analysis")
+    print("Type 'quit' to exit, 'examples' for sample questions, 'stats' for session stats.\n")
     
     example_questions = [
         "What are the fees for wire transfers?",
@@ -133,13 +179,24 @@ def demo_interactive():
         question = input("\n💬 Your question: ").strip()
         
         if question.lower() in ['quit', 'exit', 'q']:
-            print("\nThank you for using Bank RAG System!")
+            # Show session summary before exiting
+            if system.monitor:
+                system.monitor.print_session_summary()
+            print("\n✨ Thank you for using Bank RAG System!")
+            print("\n💡 Tip: Run 'python analyze_logs.py' to analyze all logged queries")
             break
         
         if question.lower() == 'examples':
             print("\n📝 Example questions:")
             for i, q in enumerate(example_questions, 1):
                 print(f"  {i}. {q}")
+            continue
+        
+        if question.lower() == 'stats':
+            if system.monitor:
+                system.monitor.print_session_summary()
+            else:
+                print("⚠️  Monitoring is disabled")
             continue
         
         if not question:
@@ -163,18 +220,17 @@ def demo_interactive():
             for i, source in enumerate(response.sources, 1):
                 print(f"  {i}. {source['source']}")
         
-        print("\n💡 Tip: Run 'python3 evaluation.py' for comprehensive evaluation metrics")
         print("-"*60)
 
 
 def demo_batch():
     """Batch demo showing multiple queries"""
     print("\n" + "="*60)
-    print("Bank RAG System - Batch Demo")
+    print("Bank RAG System - Batch Demo with Monitoring")
     print("="*60)
     
-    # Initialize system
-    system = BankRAGSystem()
+    # Initialize system with monitoring
+    system = BankRAGSystem(enable_monitoring=True)
     
     # Sample questions
     test_questions = [
@@ -199,6 +255,12 @@ def demo_batch():
         print(f"Response Time: {response.response_time:.2f}s")
         print(f"Sources: {len(response.sources)}")
         print(f"Refusal: {response.is_refusal}")
+    
+    # Show session summary
+    if system.monitor:
+        system.monitor.print_session_summary()
+    
+    print("\n💡 Tip: Run 'python analyze_logs.py' to get detailed insights and optimization recommendations")
 
 
 def demo_evaluation():
@@ -275,10 +337,11 @@ def main():
     else:
         print("Usage: python main.py [mode]")
         print("\nAvailable modes:")
-        print("  interactive  - Interactive Q&A session")
-        print("  batch        - Process multiple queries")
-        print("  eval         - Run evaluation metrics")
+        print("  interactive  - Interactive Q&A session with monitoring")
+        print("  batch        - Process multiple queries and generate logs")
+        print("  eval         - Run comprehensive evaluation metrics")
         print("  api          - Show API integration example")
+        print("  analyze      - Analyze logs and get optimization suggestions")
         print("\nDefault: interactive")
         print()
         mode = input("Select mode (or press Enter for interactive): ").strip().lower() or "interactive"
@@ -292,9 +355,16 @@ def main():
         demo_evaluation()
     elif mode == "api":
         api_integration_example()
+    elif mode == "analyze":
+        # Run log analysis
+        import subprocess
+        print("\n" + "="*60)
+        print("Running Log Analysis...")
+        print("="*60)
+        subprocess.run(["python", "analyze_logs.py"])
     else:
         print(f"\n✗ Unknown mode: {mode}")
-        print("Valid modes: interactive, batch, eval, api")
+        print("Valid modes: interactive, batch, eval, api, analyze")
         sys.exit(1)
 
 
