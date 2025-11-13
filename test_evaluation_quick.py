@@ -63,20 +63,23 @@ except Exception as e:
 # Test 4: Check config
 print("\n[4/5] Testing configuration...")
 try:
-    from config import get_azure_config
-    config = get_azure_config()
+    from config import get_model_config
+    config = get_model_config()
     
-    if config.api_key and config.api_key != "":
-        print("  ✅ Azure OpenAI API key configured")
-    else:
-        print("  ⚠️  Azure OpenAI API key not configured")
-        print("  ℹ️  Make sure .env file is set up")
+    print(f"  ✅ Ollama URL: {config.ollama_base_url}")
+    print(f"  ✅ LLM Model: {config.llm_model}")
+    print(f"  ✅ Embedding Model: {config.embedding_model}")
     
-    if config.endpoint:
-        print(f"  ✅ Endpoint: {config.endpoint[:30]}...")
-    
-    print(f"  ✅ GPT Deployment: {config.gpt_deployment}")
-    print(f"  ✅ Embedding Deployment: {config.embedding_deployment}")
+    # Check if Ollama is running
+    import requests
+    try:
+        response = requests.get(f"{config.ollama_base_url}/api/tags", timeout=2)
+        if response.status_code == 200:
+            print("  ✅ Ollama is running")
+        else:
+            print("  ⚠️  Ollama not accessible")
+    except:
+        print("  ⚠️  Ollama not running. Start Ollama first.")
     
 except Exception as e:
     print(f"  ❌ Config test failed: {e}")
@@ -100,7 +103,7 @@ print("\n" + "="*60)
 print("✅ QUICK TEST COMPLETE!")
 print("="*60)
 print("\n📚 Next steps:")
-print("   1. Ensure your .env file is configured with Azure OpenAI credentials")
+print("   1. Ensure Ollama is running and models are downloaded")
 print("   2. Run full evaluation: python3 evaluation.py")
 print("   3. Check reports in ./tests/ directory")
 print("\n💡 Tips:")

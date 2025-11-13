@@ -31,7 +31,7 @@ A production-ready Retrieval-Augmented Generation (RAG) system for intelligent A
 The Bank RAG system provides intelligent, context-aware answers to banking questions using:
 
 - **Hybrid Retrieval**: Combines BM25 (keyword) + FAISS (semantic) for optimal results
-- **Azure OpenAI**: GPT-4.1 for generation, ada-002 for embeddings
+- **Open Source Models**: Ollama for LLM generation, sentence-transformers for embeddings
 - **Citation Mechanism**: Tracks which documents were used to answer questions
 - **Refusal Mechanism**: Declines to answer when confidence is low
 - **Production-Ready**: Modular Python architecture ready for API integration
@@ -95,7 +95,7 @@ The Bank RAG system provides intelligent, context-aware answers to banking quest
               │
               ▼
        ┌─────────────┐
-       │  Azure GPT  │
+       │  Ollama LLM │
        │  Generator  │
        └──────┬──────┘
               │
@@ -107,8 +107,8 @@ The Bank RAG system provides intelligent, context-aware answers to banking quest
 ```
 
 ### Technology Stack
-- **LLM**: Azure OpenAI GPT-4.1
-- **Embeddings**: Azure OpenAI ada-002
+- **LLM**: Ollama (Llama 3.1, Qwen, Mistral, etc.)
+- **Embeddings**: sentence-transformers (all-MiniLM-L6-v2, multilingual-e5-base)
 - **Vector Store**: FAISS (Facebook AI Similarity Search)
 - **Keyword Search**: BM25
 - **Framework**: LangChain
@@ -120,8 +120,9 @@ The Bank RAG system provides intelligent, context-aware answers to banking quest
 
 ### Prerequisites
 - Python 3.8 or higher
-- Azure OpenAI API key and endpoint
-- 2GB+ RAM (for vector store)
+- Ollama installed and running (see [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md))
+- **4GB+ RAM** (default lightweight config) or 8GB+ RAM (for better quality)
+- See [PERFORMANCE_GUIDE.md](PERFORMANCE_GUIDE.md) for low-resource options
 
 ### Installation
 
@@ -136,9 +137,13 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Configure credentials
-# Create .env file with your Azure OpenAI credentials
-# (See .env file in the project or config.py for required variables)
+# 4. Install and start Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull phi3:mini  # Lightweight model (3.8B, ~4GB RAM) - default
+# Or: ollama pull llama3.1:8b  # Better quality (8GB RAM)
+
+# 5. Configure .env file (optional, defaults work)
+# See MIGRATION_GUIDE.md for configuration options
 ```
 
 ### First Run
@@ -298,10 +303,10 @@ POST to `http://localhost:8000/api/v1/query` with JSON body:
 
 ```
 bank_RAG/
-├── config.py                    # Configuration (Azure OpenAI, RAG params)
+├── config.py                    # Configuration (Ollama, embeddings, RAG params)
 ├── document_loader.py           # Load PDF/DOCX/HTML/TXT files
 ├── chunking.py                  # Text splitting and preprocessing
-├── embeddings.py                # Azure OpenAI embeddings generation
+├── embeddings.py                # sentence-transformers embeddings generation
 ├── retriever.py                 # Hybrid retrieval (BM25 + Vector)
 ├── rag_pipeline.py              # Main RAG logic + citation + refusal
 ├── evaluation.py                # Evaluation metrics (Hit Rate, MRR, nDCG)
@@ -330,16 +335,21 @@ bank_RAG/
 
 ## ⚙️ Configuration
 
-### .env file (credentials)
+### .env file (optional configuration)
 
-Create a `.env` file in the project root with your Azure OpenAI credentials:
+Create a `.env` file in the project root to customize models (optional, defaults work):
 
 ```bash
-AZURE_OPENAI_API_KEY=your-api-key-here
-AZURE_OPENAI_ENDPOINT=your-resource-endpoint
-AZURE_GPT_DEPLOYMENT=gpt-4
-AZURE_EMBEDDING_DEPLOYMENT=text-embedding-ada-002
+# Ollama Configuration
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_LLM_MODEL=phi3:mini  # Lightweight (3.8B, ~4GB RAM) - default
+# OLLAMA_LLM_MODEL=llama3.1:8b  # Better quality (8GB RAM)
+
+# Embeddings Configuration
+EMBEDDING_MODEL=all-MiniLM-L6-v2  # Lightweight (384 dims)
 ```
+
+See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed configuration options.
 
 ### config.py (system parameters)
 
@@ -530,14 +540,16 @@ python-dotenv >= 1.0.0
 
 See `requirements.txt` for complete list.
 
-**Note**: The project uses the latest stable versions of all libraries (as of October 2024) for best performance, security, and Azure OpenAI compatibility.
+**Note**: The project uses the latest stable versions of all libraries (as of October 2024) for best performance and security.
 
 ### System Requirements
 
 - Python 3.8+
-- 2GB+ RAM
-- Internet connection (for Azure OpenAI API)
-- ~500MB disk space (for dependencies and vector store)
+- **4GB+ RAM** (lightweight config) or 8GB+ RAM (standard config)
+- Ollama installed and running locally
+- ~5GB disk space (lightweight) or ~10GB (standard)
+
+**💡 Performance Tips**: See [PERFORMANCE_GUIDE.md](PERFORMANCE_GUIDE.md) for low-resource optimization
 
 ---
 
@@ -550,16 +562,18 @@ See `requirements.txt` for complete list.
 pip install -r requirements.txt
 ```
 
-### Issue: "Azure OpenAI API authentication failed"
+### Issue: "Ollama connection failed"
 
 **Solution:**
-1. Check `config.py` has correct API key
-2. Verify endpoint URL is correct
-3. Ensure deployments exist in Azure portal
-```python
-# config.py
-api_key = "your-actual-key-here"  # Get from Azure portal
-endpoint = "your-resource-endpoint"
+1. Ensure Ollama is installed and running
+2. Check Ollama is accessible at configured URL (default: http://localhost:11434)
+3. Verify model is downloaded: `ollama list`
+```bash
+# Start Ollama (if not running)
+ollama serve
+
+# Download model if missing
+ollama pull llama3.1:8b
 ```
 
 ### Issue: "FAISS index not found"
@@ -575,7 +589,8 @@ python main.py interactive
 **Possible causes:**
 - First query (cold start): Normal, subsequent queries are faster
 - Large document corpus: Consider reducing chunk size
-- Network latency: Check Azure OpenAI endpoint latency
+- Slow CPU: Consider using GPU or smaller model
+- Ollama not running: Ensure Ollama service is active
 
 **Optimization:**
 ```python
@@ -781,7 +796,8 @@ echo ".env" >> .gitignore
 Use environment variables in production:
 ```python
 import os
-api_key = os.getenv("AZURE_OPENAI_API_KEY")
+ollama_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+llm_model = os.getenv("OLLAMA_LLM_MODEL", "llama3.1:8b")
 ```
 
 ---
@@ -819,8 +835,9 @@ class RAGResponse:
 
 For questions or issues:
 - **Data Engineering Team**: Check code comments and docstrings
-- **Azure OpenAI**: See Azure portal documentation
+- **Ollama**: https://ollama.com/docs
 - **LangChain**: https://python.langchain.com/docs/
+- **Migration Guide**: See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)
 
 ---
 
@@ -856,7 +873,8 @@ This RAG system is configured for **Melbourne First Bank** with Australian banki
 ### Latest Libraries
 All packages use the latest stable versions (October 2024):
 - LangChain 0.3.x for improved performance
-- OpenAI 1.50+ for better Azure support
+- sentence-transformers 2.2+ for embeddings
+- Ollama for local LLM inference
 - No deprecation warnings
 - Production-ready and future-proof
 

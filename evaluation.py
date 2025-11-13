@@ -17,7 +17,8 @@ from datetime import datetime
 import numpy as np
 
 # LangChain and Ragas imports
-from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
+from langchain_community.chat_models import ChatOllama
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.metrics import (
@@ -30,7 +31,7 @@ from ragas.metrics import (
 from ragas.dataset_schema import SingleTurnSample
 
 from rag_pipeline import BankRAGPipeline
-from config import get_azure_config
+from config import get_model_config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -166,24 +167,21 @@ class RagasEvaluator:
     """
     
     def __init__(self):
-        """Initialize Azure OpenAI LLM and embeddings"""
-        config = get_azure_config()
+        """Initialize LLM and embeddings using Open Source models"""
+        config = get_model_config()
         
-        # Initialize LLM (for evaluation)
-        llm = AzureChatOpenAI(
-            azure_deployment=config.gpt_deployment,
-            openai_api_version=config.api_version,
-            azure_endpoint=config.endpoint,
-            api_key=config.api_key,
-            temperature=0.0,  # Use 0 temperature for evaluation to ensure determinism
+        # Initialize Ollama LLM
+        llm = ChatOllama(
+            base_url=config.ollama_base_url,
+            model=config.llm_model,
+            temperature=0.0  # Use 0 temperature for evaluation to ensure determinism
         )
         
-        # Initialize embeddings (for semantic similarity)
-        embeddings = AzureOpenAIEmbeddings(
-            azure_deployment=config.embedding_deployment,
-            openai_api_version=config.api_version,
-            azure_endpoint=config.endpoint,
-            api_key=config.api_key,
+        # Initialize HuggingFace embeddings
+        embeddings = HuggingFaceEmbeddings(
+            model_name=config.embedding_model,
+            model_kwargs={'device': 'cpu'},
+            encode_kwargs={'normalize_embeddings': True}
         )
         
         # Wrap in Ragas format

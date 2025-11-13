@@ -148,7 +148,7 @@ def create_vector_retriever(
     
     Args:
         chunks: List of document chunks
-        embeddings_model: Azure OpenAI embeddings instance
+        embeddings_model: Embeddings instance (HuggingFaceEmbeddings)
         k: Number of results to return (default from config)
         save_path: Optional path to save FAISS index
         
@@ -227,7 +227,7 @@ def create_hybrid_retriever(
     
     Args:
         chunks: List of document chunks
-        embeddings_model: Azure OpenAI embeddings instance
+        embeddings_model: Embeddings instance (HuggingFaceEmbeddings)
         use_reranker: Whether to use Cohere reranker
         save_vector_store: Whether to save FAISS index
         

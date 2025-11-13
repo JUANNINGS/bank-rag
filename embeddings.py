@@ -1,14 +1,14 @@
 """
 Embeddings Module
-Handles text embeddings generation using Azure OpenAI
+Handles text embeddings generation using sentence-transformers
 Following patterns from RAG.ipynb
 """
 
 import logging
 from typing import List
-from langchain_openai import AzureOpenAIEmbeddings
 from langchain_core.documents import Document
-from config import get_azure_config
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from config import get_model_config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,27 +17,24 @@ logger = logging.getLogger(__name__)
 
 class BankEmbeddingsGenerator:
     """
-    Embeddings generator using Azure OpenAI
+    Embeddings generator using sentence-transformers
     Converts text chunks into vector embeddings for semantic search
     """
     
     def __init__(self):
         """
-        Initialize embeddings generator with Azure OpenAI configuration
+        Initialize embeddings generator with sentence-transformers
         """
-        config = get_azure_config()
+        config = get_model_config()
         
-        # Initialize Azure OpenAI Embeddings
-        # Uses text-embedding-ada-002 model through Azure deployment
-        self.embeddings = AzureOpenAIEmbeddings(
-            azure_deployment=config.embedding_deployment,
-            openai_api_version=config.api_version,
-            azure_endpoint=config.endpoint,
-            api_key=config.api_key,
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name=config.embedding_model,
+            model_kwargs={'device': 'cpu'},  # Use 'cuda' if GPU available
+            encode_kwargs={'normalize_embeddings': True}
         )
         
         logger.info(
-            f"Initialized embeddings with Azure deployment: {config.embedding_deployment}"
+            f"Initialized embeddings with model: {config.embedding_model}"
         )
     
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
@@ -89,13 +86,13 @@ class BankEmbeddingsGenerator:
             logger.error(f"Error generating query embedding: {str(e)}")
             raise
     
-    def get_embeddings_model(self) -> AzureOpenAIEmbeddings:
+    def get_embeddings_model(self):
         """
         Get the underlying embeddings model
         Useful for passing to vector stores (FAISS, Chroma, etc.)
         
         Returns:
-            Azure OpenAI Embeddings model instance
+            Embeddings model instance (HuggingFaceEmbeddings)
         """
         return self.embeddings
 

@@ -4,13 +4,14 @@
 
 # Core LangChain Dependencies - Latest versions
 langchain>=0.3.0
-langchain-openai>=0.2.0
 langchain-community>=0.3.0
 langchain-core>=0.3.0
 langchain-text-splitters>=0.3.0
 
-# Azure OpenAI - Latest version
-openai>=1.50.0
+# Open Source Models
+sentence-transformers>=2.2.0
+torch>=2.0.0  # Required by sentence-transformers
+requests>=2.31.0  # For Ollama API calls
 
 # Vector Store and Retrieval
 faiss-cpu>=1.8.0

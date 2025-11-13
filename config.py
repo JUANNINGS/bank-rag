@@ -1,6 +1,6 @@
 """
 Configuration file for Bank RAG System
-Contains Azure OpenAI settings and system parameters
+Uses Open Source models (Ollama + sentence-transformers)
 
 Note: Credentials are read from .env file or environment variables
 """
@@ -14,25 +14,23 @@ from dotenv import load_dotenv
 load_dotenv()
 
 @dataclass
-class AzureOpenAIConfig:
-    """Azure OpenAI configuration settings"""
+class ModelConfig:
+    """Open Source Model Configuration (Ollama + sentence-transformers)"""
     
-    # Azure OpenAI Credentials
-    # IMPORTANT: Set these via environment variables or update with your values
-    api_key: str = os.getenv("AZURE_OPENAI_API_KEY")  # Your Azure OpenAI API key
-    endpoint: str = os.getenv("AZURE_OPENAI_ENDPOINT")
-    api_version: str = "2024-12-01-preview"
+    # Ollama Configuration
+    ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    # Lightweight options: phi3:mini (3.8B, ~4GB RAM), llama3.1:8b (8GB RAM)
+    # Note: llama3.1:3b does not exist. Use phi3:mini for lightweight option.
+    llm_model: str = os.getenv("OLLAMA_LLM_MODEL", "phi3:mini")  # Default: lightweight 3.8B model
     
-    # Deployment Names (update these to match your Azure deployments)
-    gpt_deployment: str = os.getenv("AZURE_GPT_DEPLOYMENT")  # Your GPT model deployment name
-    embedding_deployment: str = os.getenv("AZURE_EMBEDDING_DEPLOYMENT")  # Your embedding model deployment name
+    # Sentence Transformers Configuration
+    # all-MiniLM-L6-v2 is the lightest (384 dims, ~90MB)
+    embedding_model: str = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")  # Options: all-MiniLM-L6-v2, multilingual-e5-base
     
     # Model Parameters
     temperature: float = 0.0  # 0 for deterministic responses
-    max_tokens: int = 1000  # Maximum tokens in response
+    max_tokens: int = 500  # Maximum tokens in response (reduced for performance)
     top_p: float = 1.0
-    frequency_penalty: float = 0.0
-    presence_penalty: float = 0.0
 
 
 @dataclass
@@ -40,11 +38,11 @@ class RAGConfig:
     """RAG system configuration"""
     
     # Document Processing
-    chunk_size: int = 1000  # Characters per chunk
-    chunk_overlap: int = 200  # Overlap between chunks
+    chunk_size: int = 500  # Characters per chunk (reduced for performance)
+    chunk_overlap: int = 100  # Overlap between chunks (reduced for performance)
     
     # Retrieval Parameters
-    top_k: int = 5  # Number of chunks to retrieve
+    top_k: int = 3  # Number of chunks to retrieve (reduced for performance)
     reranker_top_n: int = 3  # Number of chunks after reranking
     
     # Confidence Thresholds
@@ -89,14 +87,14 @@ class SystemConfig:
 
 
 # Global configuration instances
-azure_config = AzureOpenAIConfig()
+model_config = ModelConfig()
 rag_config = RAGConfig()
 system_config = SystemConfig()
 
 
-def get_azure_config() -> AzureOpenAIConfig:
-    """Get Azure OpenAI configuration"""
-    return azure_config
+def get_model_config() -> ModelConfig:
+    """Get model configuration"""
+    return model_config
 
 
 def get_rag_config() -> RAGConfig:
@@ -107,12 +105,6 @@ def get_rag_config() -> RAGConfig:
 def get_system_config() -> SystemConfig:
     """Get system configuration"""
     return system_config
-
-
-def update_azure_api_key(api_key: str) -> None:
-    """Update Azure OpenAI API key"""
-    global azure_config
-    azure_config.api_key = api_key
 
 
 def update_cohere_api_key(api_key: str) -> None:
