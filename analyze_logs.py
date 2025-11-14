@@ -19,7 +19,8 @@ try:
         context_recall
     )
     from datasets import Dataset
-    from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
+    from langchain_community.chat_models import ChatOllama
+    from langchain_community.embeddings import HuggingFaceEmbeddings
     RAGAS_AVAILABLE = True
 except ImportError:
     RAGAS_AVAILABLE = False
@@ -108,12 +109,20 @@ class LogAnalyzer:
         if not self.logs:
             return {}
         
-        # Check if Azure OpenAI is configured
-        api_key = os.getenv("AZURE_OPENAI_API_KEY")
-        endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        # Check if Ollama is running
+        from config import get_model_config
         
-        if not api_key or not endpoint:
-            print("⚠️  Azure OpenAI not configured. Set AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT in .env")
+        config = get_model_config()
+        ollama_url = config.ollama_base_url
+        
+        try:
+            import requests
+            response = requests.get(f"{ollama_url}/api/tags", timeout=2)
+            if response.status_code != 200:
+                print(f"⚠️  Ollama not accessible at {ollama_url}")
+                return {}
+        except:
+            print(f"⚠️  Ollama not running. Start Ollama or set OLLAMA_BASE_URL in .env")
             return {}
         
         # Sample queries (evaluate subset to save time)
@@ -133,32 +142,42 @@ class LogAnalyzer:
         print("This may take 1-2 minutes...")
         
         try:
-            # Configure Azure OpenAI for Ragas
-            azure_model = AzureChatOpenAI(
-                azure_endpoint=endpoint,
-                api_key=api_key,
-                api_version="2024-02-15-preview",
-                deployment_name=os.getenv("AZURE_GPT_DEPLOYMENT", "gpt-4"),
-                model="gpt-4",
+            # Use Open Source models
+            from config import get_model_config
+            
+            config = get_model_config()
+            
+            llm = ChatOllama(
+                base_url=config.ollama_base_url,
+                model=config.llm_model,
                 temperature=0
             )
             
-            azure_embeddings = AzureOpenAIEmbeddings(
-                azure_endpoint=endpoint,
-                api_key=api_key,
-                api_version="2024-02-15-preview",
-                deployment=os.getenv("AZURE_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002")
+            embeddings = HuggingFaceEmbeddings(
+                model_name=config.embedding_model,
+                model_kwargs={'device': 'cpu'},
+                encode_kwargs={'normalize_embeddings': True}
             )
             
-            # Run Ragas evaluation with Azure OpenAI
+            # Wrap in Ragas format
+            from ragas.llms import LangchainLLMWrapper
+            from ragas.embeddings import LangchainEmbeddingsWrapper
+            
+            ragas_llm = LangchainLLMWrapper(llm)
+            ragas_embeddings = LangchainEmbeddingsWrapper(embeddings)
+            
+            # Configure metrics
+            faithfulness.llm = ragas_llm
+            answer_relevancy.llm = ragas_llm
+            answer_relevancy.embeddings = ragas_embeddings
+            
+            # Run Ragas evaluation
             results = evaluate(
                 dataset,
                 metrics=[
                     faithfulness,        # How faithful is answer to context?
                     answer_relevancy,    # How relevant is answer to question?
-                ],
-                llm=azure_model,
-                embeddings=azure_embeddings
+                ]
             )
             
             # Ragas returns lists of scores, calculate averages

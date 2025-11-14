@@ -66,7 +66,7 @@ class BankRAGSystem:
         logger.info(f"✓ Created {len(chunks)} chunk(s)")
         
         # Step 3: Create embeddings
-        logger.info("\n3. Initializing Azure OpenAI embeddings...")
+        logger.info("\n3. Initializing embeddings...")
         embeddings_gen = create_embeddings_generator()
         embeddings_model = embeddings_gen.get_embeddings_model()
         logger.info("✓ Embeddings ready")

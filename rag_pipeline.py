@@ -8,10 +8,10 @@ import logging
 import time
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
-from langchain_openai import AzureChatOpenAI
 from langchain_core.documents import Document
+from langchain_community.chat_models import ChatOllama
 from retriever import HybridRetriever
-from config import get_azure_config, get_rag_config
+from config import get_model_config, get_rag_config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -60,25 +60,23 @@ class BankRAGPipeline:
             retriever: Hybrid retriever instance
             refusal_threshold: Minimum confidence to answer (default from config)
         """
-        azure_config = get_azure_config()
+        model_config = get_model_config()
         rag_config = get_rag_config()
         
         self.retriever = retriever
         self.refusal_threshold = refusal_threshold or rag_config.refusal_threshold
         
-        # Initialize Azure OpenAI LLM
-        self.llm = AzureChatOpenAI(
-            azure_deployment=azure_config.gpt_deployment,
-            openai_api_version=azure_config.api_version,
-            azure_endpoint=azure_config.endpoint,
-            api_key=azure_config.api_key,
-            temperature=azure_config.temperature,
-            max_tokens=azure_config.max_tokens
+        # Initialize Ollama LLM
+        self.llm = ChatOllama(
+            base_url=model_config.ollama_base_url,
+            model=model_config.llm_model,
+            temperature=model_config.temperature,
+            num_predict=model_config.max_tokens
         )
         
         logger.info(
             f"Initialized RAG Pipeline "
-            f"(model={azure_config.gpt_deployment}, "
+            f"(model={model_config.llm_model}, "
             f"refusal_threshold={self.refusal_threshold})"
         )
     
